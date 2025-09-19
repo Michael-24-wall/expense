@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>User Profile</h2>
+
+<div class="profile-container">
+    <div class="user-info">
+        <h3>Account Information</h3>
+        <p><strong>Username:</strong> {{ session.username }}</p>
+    </div>
+    
+    <div class="preferences">
+        <h3>Preferences</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label for="currency">Currency Symbol:</label>
+                <select id="currency" name="currency">
+                    <option value="$" {% if preferences.currency == '$' %}selected{% endif %}>Dollar ($)</option>
+                    <option value="€" {% if preferences.currency == '€' %}selected{% endif %}>Euro (€)</option>
+                    <option value="£" {% if preferences.currency == '£' %}selected{% endif %}>Pound (£)</option>
+                    <option value="¥" {% if preferences.currency == '¥' %}selected{% endif %}>Yen (¥)</option>
+                    <option value="₹" {% if preferences.currency == '₹' %}selected{% endif %}>Rupee (₹)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="monthly_budget">Monthly Budget:</label>
+                <input type="number" id="monthly_budget" name="monthly_budget" 
+                       step="0.01" min="0" value="{{ preferences.monthly_budget }}">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save Preferences</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

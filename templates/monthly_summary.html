@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Monthly Summary - {{ current_month }}</h2>
+
+
+<div class="chart-container">
+    <h3>Spending by Category</h3>
+    <canvas id="expenseChart" width="400" height="200"></canvas>
+</div>
+
+{% if expenses %}
+<table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for expense in expenses %}
+        <tr>
+            <td>{{ expense.category }}</td>
+            <td>${{ "%.2f"|format(expense.total) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No expenses recorded for this month.</p>
+{% endif %}
+
+<h3>Your Subscriptions</h3>
+{% if subscriptions %}
+<ul class="subscription-list">
+    {% for subscription in subscriptions %}
+    <li>{{ subscription.category }} - {{ subscription.description }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No subscriptions recorded yet.</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary">Back to All Expenses</a>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    
+    // 
+    
+if (categories.length === 0 || amounts.length === 0) {
+    document.getElementById('expenseChart').style.display = 'none';
+    document.querySelector('.chart-container').innerHTML += 
+        '<p class="no-data">No data available for chart</p>';
+} else {
+    
+}
+    
+    
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                data: amounts,
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                    '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF',
+                    '#2ECC71', '#9B59B6', '#34495E', '#E67E22'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                },
+                title: {
+                    display: true,
+                    text: 'Spending Distribution by Category'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
